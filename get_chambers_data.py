@@ -19,6 +19,7 @@ start = time.time()
 
 for i in data:
     row_array = []
+    
     row_array.append(data["description"])
     for group in data["groups"]:
         row_array.append(group["type"])
@@ -34,11 +35,7 @@ for i in data:
                     for ranking in person["rankings"]:
                         row_array.append(ranking["rankingDescription"])
         
-
-        
-        
     outputWriter.writerow(row_array)
-    
     
 
 outputFile.close()    
