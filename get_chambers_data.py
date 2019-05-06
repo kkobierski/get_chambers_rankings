@@ -1,45 +1,44 @@
-import json
 import csv
+
 import requests
-import time
 
-url = 'https://api.chambers.com/api/organisations/250204/ranked-lawyers?publicationTypeId=2'
-url2 = 'https://api.chambers.com/api/organisations/111/ranked-lawyers?publicationTypeId=7'
-
-data = requests.get(url2).text
-data = json.loads(data)
+URL_T2 = 'https://api.chambers.com/api/organisations/250204/ranked-lawyers?publicationTypeId=2'
+URL_T7 = 'https://api.chambers.com/api/organisations/111/ranked-lawyers?publicationTypeId=7'
 
 
-outputFile = open("data.csv", "w")
-outputWriter = csv.writer(outputFile)
 
-publisher = 'Chambers and Partners'
-
-start = time.time()
+def translate_chambers_json(data):
+    _cur_desc = data["description"]
 
 for i in data:
     row_array = []
     
     row_array.append(data["description"])
-    for group in data["groups"]:
-        row_array.append(group["type"])
-        for practice in group["practiceAreas"]:
-            row_array.append(practice["id"])
-            row_array.append(practice["description"])
-            for location in practice["individualsInLocations"]:
-                row_array.append(location["id"])
-                row_array.append(location["description"])
-                for person in location["rankedEntities"]:
-                    row_array.append(person["personOrganisationId"])
-                    row_array.append(person["displayName"])
-                    for ranking in person["rankings"]:
-                        row_array.append(ranking["rankingDescription"])
-        
-    outputWriter.writerow(row_array)
-    
 
-outputFile.close()    
-        
-end = time.time()
-print(end - start)
 
+                        _cur_rank_desc = ranking["rankingDescription"]
+
+                    yield [
+                        _cur_desc,
+                        _cur_type,
+                        _cur_practice_id,
+                        _cur_practice_desc,
+                        _cur_loc_id,
+                        _cur_loc_desc,
+                        _cur_person_id,
+                        _cur_person_name,
+                        _cur_rank_desc
+                    ]
+
+
+if __name__ == '__main__':
+    try:
+        data = requests.get(URL_T7).json()
+    except Exception:
+        raise SystemExit('**Something** went wrong, debug it fool!')
+
+    with open('data.csv', 'w') as file_obj:
+        csv_writer = csv.writer(file_obj)
+
+        for row in translate_chambers_json(data):
+            csv_writer.writerow(row)
