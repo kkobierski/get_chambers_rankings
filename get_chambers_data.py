@@ -1,8 +1,13 @@
 import csv
 import requests
 
-URL_T2 = 'https://api.chambers.com/api/organisations/250204/ranked-lawyers?publicationTypeId=2'
-URL_T7 = 'https://api.chambers.com/api/organisations/111/ranked-lawyers?publicationTypeId=7'
+firm_id = 250204
+ranking_id = 2
+
+
+url_firm = 'https://api.chambers.com/api/organisations/{}/ranked-lawyers?publicationTypeId={}'.format(firm_id,ranking_id)
+url_individual = 'https://api.chambers.com/api/organisations/{}/ranked-departments?publicationTypeId={}'.format(firm_id,ranking_id)
+
 
 
 def translate_chambers_json(data):
@@ -36,11 +41,11 @@ def translate_chambers_json(data):
 
 if __name__ == '__main__':
     try:
-        data = requests.get(URL_T7).json()
+        data = requests.get(url_firm).json()
     except Exception:
         raise SystemExit('**Something** went wrong, debug it fool!')
 
-    with open('data.csv', 'w') as file_obj:
+    with open('firm.csv', 'w') as file_obj:
         csv_writer = csv.writer(file_obj)
 
         for row in translate_chambers_json(data):
