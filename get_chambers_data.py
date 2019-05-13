@@ -1,17 +1,18 @@
 import csv
 import requests
 
-firm_id = 250204
+firm_id = 111
 ranking_id = 2
 
 
-url_firm = 'https://api.chambers.com/api/organisations/{}/ranked-lawyers?publicationTypeId={}'.format(firm_id,ranking_id)
-url_individual = 'https://api.chambers.com/api/organisations/{}/ranked-departments?publicationTypeId={}'.format(firm_id,ranking_id)
+url_firm = 'https://api.chambers.com/api/organisations/{}/ranked-departments?publicationTypeId={}'.format(firm_id,ranking_id)
+url_individual = 'https://api.chambers.com/api/organisations/{}/ranked-lawyers?publicationTypeId={}'.format(firm_id,ranking_id)
 
 
 
 def translate_chambers_json(data):
     _cur_desc = data["description"]
+    _cur_firm_id = firm_id
     for group in data["groups"]:
         _cur_type = group["type"]
         for practice in group["practiceAreas"]:
@@ -35,13 +36,14 @@ def translate_chambers_json(data):
                         _cur_loc_desc,
                         _cur_person_id,
                         _cur_person_name,
-                        _cur_rank_desc
+                        _cur_rank_desc,
+                        _cur_firm_id
                     ]
 
 
 if __name__ == '__main__':
     try:
-        data = requests.get(url_firm).json()
+        data = requests.get(url_individual).json()
     except Exception:
         raise SystemExit('**Something** went wrong, debug it fool!')
 
