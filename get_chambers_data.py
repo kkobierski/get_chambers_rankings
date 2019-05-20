@@ -1,15 +1,13 @@
 import csv
+
 import requests
-from libs.translate_chambers_json import translate_chambers_json_individual
-from libs.translate_chambers_json import translate_chambers_json_firm
 
+import settings as settings
+from libs.translate_chambers_json import (translate_chambers_json_firm,
+                                          translate_chambers_json_individual)
 
-firm_id = 111
 publication_id = 2
-
-
-url_firm = '''https://api.chambers.com/api/organisations/{}/\
-ranked-departments?publicationTypeId={}'''.format(firm_id, publication_id)
+URL_FIRM = settings.get_url_firm()
 
 url_individual = '''https://api.chambers.com/api/organisations/{}/\
 ranked-lawyers?publicationTypeId={}'''.format(firm_id, publication_id)
@@ -26,9 +24,9 @@ if __name__ == '__main__':
 
         for row in translate_chambers_json_individual(data):
             csv_writer.writerow(row)
-         
+
     try:
-        data = requests.get(url_firm).json()
+        data = requests.get(URL_FIRM).json()
     except Exception:
         raise SystemExit('**Something** went wrong, debug it fool!')
 
