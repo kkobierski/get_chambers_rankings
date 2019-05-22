@@ -1,5 +1,4 @@
 import settings as settings
-import csv
 
 
 def translate_chambers_json_individual(data):
@@ -58,4 +57,3 @@ def translate_chambers_json_firm(data):
                 _cur_publication_id,
                 _cur_firm_id
                 ]
-    
