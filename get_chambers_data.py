@@ -23,8 +23,9 @@ def fetching_results_from_api(url):
 def save_json_to_file(file_name, data):
     with open(file_name, 'w') as file_obj:
         csv_writer = csv.writer(file_obj)
+        firm_id = firm
 
-        for row in translate_chambers_json_firm(data):
+        for row in translate_chambers_json_individual(data, firm_id):
             csv_writer.writerow(row)
 
 
@@ -38,4 +39,4 @@ def get_api_data(firm_id, for_firm=True):
 
 
 for firm in FIRMS_LIST:
-    get_api_data(firm)
+    get_api_data(firm,for_firm=False)
