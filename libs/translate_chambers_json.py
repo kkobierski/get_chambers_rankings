@@ -57,3 +57,10 @@ def translate_chambers_json_firm(data):
                 _cur_publication_id,
                 _cur_firm_id
                 ]
+
+
+def translate_json_data(for_firm, data):
+    if for_firm:
+        transalte_chambers_json_firm(data)
+    else:
+        transalte_chambers_json_firm(data)
