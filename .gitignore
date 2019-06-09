@@ -127,4 +127,5 @@ data.csv
 test.csv
 firm.csv
 test.py
-
+data/*
+data/

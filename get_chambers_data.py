@@ -1,39 +1,42 @@
 import csv
+
 import requests
-from libs.translate_chambers_json import translate_chambers_json_individual
-from libs.translate_chambers_json import translate_chambers_json_firm
+
+import settings as settings
+from libs.translate_chambers_json import (translate_chambers_json_firm,
+                                          translate_chambers_json_individual)
+
+from libs.translate_chambers_json import translate_json_data
+
+FIRMS_LIST = settings.FIRMS_LIST
 
 
-firm_id = 111
-publication_id = 2
-
-
-url_firm = '''https://api.chambers.com/api/organisations/{}/\
-ranked-departments?publicationTypeId={}'''.format(firm_id, publication_id)
-
-url_individual = '''https://api.chambers.com/api/organisations/{}/\
-ranked-lawyers?publicationTypeId={}'''.format(firm_id, publication_id)
-
-
-if __name__ == '__main__':
+def fetching_results_from_api(url):
+    data = ""
     try:
-        data = requests.get(url_individual).json()
+        data = requests.get(url).json()
     except Exception:
-        raise SystemExit('**Something** went wrong, debug it fool!')
+        pass
+    return data
 
-    with open('data/individuals_{}.csv'.format(firm_id), 'w') as file_obj:
+
+def save_json_to_file(file_name, data):
+    with open(file_name, 'w') as file_obj:
         csv_writer = csv.writer(file_obj)
+        firm_id = firm
 
-        for row in translate_chambers_json_individual(data):
+        for row in translate_chambers_json_individual(data, firm_id):
             csv_writer.writerow(row)
-         
-    try:
-        data = requests.get(url_firm).json()
-    except Exception:
-        raise SystemExit('**Something** went wrong, debug it fool!')
 
-    with open('data/firm_{}.csv'.format(firm_id), 'w') as file_obj:
-        csv_writer = csv.writer(file_obj)
 
-        for row in translate_chambers_json_firm(data):
-            csv_writer.writerow(row)
+def get_api_data(firm_id, for_firm=True):
+    level = 'firm' if for_firm else 'lawyers'
+    url = settings.get_url(firm_id, for_firm)
+    api_data = fetching_results_from_api(url)
+
+    if api_data:
+        save_json_to_file(f"data/{level}_{firm_id}.csv", api_data)
+
+
+for firm in FIRMS_LIST:
+    get_api_data(firm,for_firm=False)

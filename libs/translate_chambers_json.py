@@ -1,13 +1,11 @@
-firm_id = 111
-publication_id = 2
+import settings as settings
 
 
-def translate_chambers_json_individual(data):
+def translate_chambers_json_individual(data, firm_id):
     _cur_desc = data["description"]
     _cur_firm_id = firm_id
-    _cur_publication_id = publication_id
+    _cur_publication_id = settings.PUBLICATION_ID
     for group in data["groups"]:
-        # _cur_type = group["type"]
         for practice in group["practiceAreas"]:
             _cur_practice_id = practice["id"]
             _cur_practice_desc = practice["description"]
@@ -22,7 +20,6 @@ def translate_chambers_json_individual(data):
 
                     yield [
                         _cur_desc,
-                        # _cur_type,
                         _cur_practice_id,
                         _cur_practice_desc,
                         _cur_loc_id,
@@ -58,3 +55,10 @@ def translate_chambers_json_firm(data):
                 _cur_publication_id,
                 _cur_firm_id
                 ]
+
+
+def translate_json_data(for_firm, data):
+    if for_firm:
+        transalte_chambers_json_firm(data)
+    else:
+        transalte_chambers_json_firm(data)
