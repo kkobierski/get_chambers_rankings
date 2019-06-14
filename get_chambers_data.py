@@ -23,6 +23,7 @@ def fetching_results_from_api(url):
 def save_json_to_file(file_name, data):
     with open(file_name, 'w') as file_obj:
         csv_writer = csv.writer(file_obj)
+        csv_writer.writerow(["desc", "practice_id", "practice_desc", "loc_id", "loc_desc", "person_id", "person_name", "rank_desc", "publication_id", "firm_id"])
         firm_id = firm
 
         for row in translate_chambers_json_individual(data, firm_id):
