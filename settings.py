@@ -2,9 +2,11 @@
 settings module for the app
 """
 
-FIRMS_LIST = [111, 7821, 126396, 250204]
+FIRMS_LIST = [111, 2692, 22401592, 7489, 257, 309, 130, 83]
 
-PUBLICATION_ID = 2
+PUBLICATION_ID = 1
+
+COL_NAMES_CSV = ["desc", "practice_id", "practice_desc", "loc_id", "loc_desc", "person_id", "person_name", "rank_desc", "publication_id", "firm_id"]
 
 #
 #def get_url_firm(firm_id):

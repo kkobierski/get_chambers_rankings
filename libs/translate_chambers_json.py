@@ -32,8 +32,10 @@ def translate_chambers_json_individual(data, firm_id):
                         ]
 
 
-def translate_chambers_json_firm(data):
+def translate_chambers_json_firm(data, firm_id):
     _cur_desc = data["description"]
+    _cur_person_id = ""
+    _cur_person_name = ""
     for location in data["locations"]:
         _cur_loc_desc = location["description"]
         _cur_loc_id = location["id"]
@@ -51,6 +53,8 @@ def translate_chambers_json_firm(data):
                 _cur_practice_desc,
                 _cur_loc_id,
                 _cur_loc_desc,
+                _cur_person_id,
+                _cur_person_name,
                 _cur_rank_desc,
                 _cur_publication_id,
                 _cur_firm_id

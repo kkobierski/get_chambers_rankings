@@ -9,6 +9,7 @@ from libs.translate_chambers_json import (translate_chambers_json_firm,
 from libs.translate_chambers_json import translate_json_data
 
 FIRMS_LIST = settings.FIRMS_LIST
+COL_NAMES_CSV = settings.COL_NAMES_CSV
 
 
 def fetching_results_from_api(url):
@@ -23,10 +24,10 @@ def fetching_results_from_api(url):
 def save_json_to_file(file_name, data):
     with open(file_name, 'w') as file_obj:
         csv_writer = csv.writer(file_obj)
-        csv_writer.writerow(["desc", "practice_id", "practice_desc", "loc_id", "loc_desc", "person_id", "person_name", "rank_desc", "publication_id", "firm_id"])
+        csv_writer.writerow(COL_NAMES_CSV)
         firm_id = firm
 
-        for row in translate_chambers_json_individual(data, firm_id):
+        for row in translate_chambers_json_firm(data, firm_id):
             csv_writer.writerow(row)
 
 
@@ -40,4 +41,5 @@ def get_api_data(firm_id, for_firm=True):
 
 
 for firm in FIRMS_LIST:
-    get_api_data(firm,for_firm=False)
+    print(firm)
+    get_api_data(firm, for_firm=True)
